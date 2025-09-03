@@ -6,125 +6,54 @@
     <title>Hourglass Timer</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             margin: 0;
             padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            color: white;
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             text-align: center;
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
         }
 
         h1 {
-            color: #4a5568;
             margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             font-size: 2.5em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .hourglass {
-            width: 120px;
-            height: 200px;
-            margin: 20px auto;
-            position: relative;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
-        }
-
-        .hourglass-frame {
-            width: 100%;
-            height: 100%;
-            border: 8px solid #8b4513;
-            border-radius: 20px 20px 0 0;
-            position: relative;
-            background: linear-gradient(to bottom, #f4f4f4 0%, #e0e0e0 100%);
-        }
-
-        .hourglass-frame::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: -8px;
-            right: -8px;
-            height: 50%;
-            border: 8px solid #8b4513;
-            border-top: none;
-            border-radius: 0 0 20px 20px;
-            background: linear-gradient(to bottom, #e0e0e0 0%, #f4f4f4 100%);
-        }
-
-        .sand-top, .sand-bottom {
-            position: absolute;
-            background: linear-gradient(45deg, #ffd700, #ffed4a, #f59e0b);
-            transition: height 0.1s linear;
-        }
-
-        .sand-top {
-            top: 8px;
-            left: 8px;
-            right: 8px;
-            border-radius: 12px 12px 0 0;
-        }
-
-        .sand-bottom {
-            bottom: 8px;
-            left: 8px;
-            right: 8px;
-            border-radius: 0 0 12px 12px;
-        }
-
-        .neck {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 20px;
-            height: 4px;
-            background: #8b4513;
-            z-index: 10;
-        }
-
-        .falling-sand {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            background: linear-gradient(to bottom, #ffd700, #ffed4a);
-            z-index: 5;
-            transition: height 0.1s linear;
         }
 
         .controls {
-            margin: 30px 0;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
 
-        .control-group {
-            margin: 20px 0;
+        .control-section {
+            margin-bottom: 25px;
             padding: 15px;
-            background: #f8fafc;
-            border-radius: 10px;
-            border: 2px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .control-group h3 {
-            margin: 0 0 10px 0;
-            color: #4a5568;
+        .control-section h3 {
+            margin: 0 0 15px 0;
             font-size: 1.1em;
+            opacity: 0.9;
         }
 
-        .time-inputs {
+        .time-input {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -132,88 +61,281 @@
             flex-wrap: wrap;
         }
 
-        .time-input {
+        .time-field {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .time-input label {
+        .time-field label {
             font-size: 0.9em;
-            color: #64748b;
             margin-bottom: 5px;
+            opacity: 0.8;
         }
 
-        .time-input input {
+        .time-field input {
             width: 60px;
-            padding: 8px;
-            border: 2px solid #cbd5e0;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 1.1em;
-        }
-
-        select, button {
-            padding: 10px 20px;
-            border: 2px solid #cbd5e0;
+            padding: 10px;
+            border: none;
             border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 2px solid transparent;
             transition: all 0.2s;
         }
 
-        select {
-            background: white;
-            margin: 0 10px;
+        .time-field input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
         }
 
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .sound-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sound-controls select {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            cursor: pointer;
+        }
+
+        .sound-controls button {
+            background: #4CAF50;
             color: white;
             border: none;
-            font-weight: bold;
-            margin: 0 5px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
         }
 
-        button:hover {
+        .sound-controls button:hover {
+            background: #45a049;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        button:disabled {
-            background: #a0aec0;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .timer-display {
-            font-size: 2em;
-            font-weight: bold;
-            color: #4a5568;
-            margin: 20px 0;
-            font-family: 'Courier New', monospace;
-            background: #f8fafc;
-            padding: 15px;
-            border-radius: 10px;
-            border: 3px solid #e2e8f0;
-        }
-
-        .sound-preview {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
         }
 
         .volume-control {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .volume-slider {
-            width: 100px;
+            width: 120px;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .timer-controls {
+            margin-top: 20px;
+        }
+
+        .timer-controls button {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 0 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .timer-controls button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .timer-controls button:disabled {
+            background: rgba(150, 150, 150, 0.6);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .hourglass-container {
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .hourglass {
+            width: 220px;
+            height: 320px;
+            margin: 0 auto;
+            position: relative;
+            background: linear-gradient(45deg, #8B4513, #D2691E, #CD853F);
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            border: 3px solid #654321;
+        }
+
+        .hourglass::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            background: #2c3e50;
+            border-radius: 8px;
+        }
+
+        .sand-container {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            right: 18px;
+            bottom: 18px;
+        }
+
+        .top-sand, .bottom-sand {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background: linear-gradient(45deg, #f4d03f, #f7dc6f, #f9e79f);
+            transition: height 0.5s ease;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .top-sand {
+            top: 0;
+            height: 50%;
+            border-radius: 8px 8px 60px 60px;
+        }
+
+        .bottom-sand {
+            bottom: 0;
+            height: 0%;
+            border-radius: 60px 60px 8px 8px;
+        }
+
+        .neck {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 24px;
+            height: 24px;
+            background: #2c3e50;
+            transform: translate(-50%, -50%) rotate(45deg);
+            z-index: 10;
+            border-radius: 2px;
+        }
+
+        .time-display {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 25px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+            display: inline-block;
+            min-width: 200px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .status {
+            font-size: 18px;
+            margin-top: 15px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .finished {
+            animation: glow 1s ease-in-out infinite alternate;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24) !important;
+        }
+
+        @keyframes glow {
+            from { 
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff6b6b;
+                transform: scale(1);
+            }
+            to { 
+                text-shadow: 0 0 20px #fff, 0 0 30px #ff6b6b, 0 0 40px #ff6b6b;
+                transform: scale(1.05);
+            }
+        }
+
+        .falling-sand {
+            position: absolute;
+            width: 3px;
+            background: linear-gradient(to bottom, #f4d03f, #f7dc6f, rgba(244, 208, 63, 0));
+            left: 50%;
+            transform: translateX(-50%);
+            top: 47%;
+            height: 6%;
+            opacity: 0;
+            border-radius: 2px;
+        }
+
+        .falling-sand.active {
+            opacity: 0.8;
+            animation: fall 1.5s linear infinite;
+        }
+
+        @keyframes fall {
+            0% { 
+                top: 47%; 
+                opacity: 0.8;
+                width: 3px;
+            }
+            50% {
+                width: 2px;
+                opacity: 1;
+            }
+            100% { 
+                top: 53%; 
+                opacity: 0;
+                width: 4px;
+            }
+        }
+
+        /* Multiple sand particles for more realistic effect */
+        .sand-particle {
+            position: absolute;
+            width: 1px;
+            height: 2px;
+            background: #f4d03f;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .sand-particle.active {
+            animation: particle-fall 2s linear infinite;
+        }
+
+        @keyframes particle-fall {
+            0% {
+                top: 48%;
+                opacity: 0.6;
+                transform: translateX(-50%) translateY(0);
+            }
+            100% {
+                top: 52%;
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
         }
 
         @keyframes shake {
@@ -225,58 +347,43 @@
         .shake {
             animation: shake 0.5s ease-in-out 3;
         }
-
-        .finished {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24) !important;
-            color: white !important;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>⏳ Hourglass Timer</h1>
         
-        <div class="hourglass">
-            <div class="hourglass-frame">
-                <div class="sand-top" id="sandTop"></div>
-                <div class="sand-bottom" id="sandBottom"></div>
-                <div class="neck"></div>
-                <div class="falling-sand" id="fallingSand"></div>
-            </div>
-        </div>
-
-        <div class="timer-display" id="timerDisplay">00:05:00</div>
-
         <div class="controls">
-            <div class="control-group">
-                <h3>Set Timer Duration</h3>
-                <div class="time-inputs">
-                    <div class="time-input">
+            <div class="control-section">
+                <h3>⏰ Set Timer Duration</h3>
+                <div class="time-input">
+                    <div class="time-field">
                         <label>Hours</label>
                         <input type="number" id="hours" min="0" max="23" value="0">
                     </div>
-                    <div class="time-input">
+                    <div class="time-field">
                         <label>Minutes</label>
                         <input type="number" id="minutes" min="0" max="59" value="5">
                     </div>
-                    <div class="time-input">
+                    <div class="time-field">
                         <label>Seconds</label>
                         <input type="number" id="seconds" min="0" max="59" value="0">
                     </div>
                 </div>
             </div>
-
-            <div class="control-group">
-                <h3>Alarm Sound</h3>
-                <div class="sound-preview">
+            
+            <div class="control-section">
+                <h3>🔊 Alarm Sound</h3>
+                <div class="sound-controls">
                     <select id="soundSelect">
                         <option value="beep">Classic Beep</option>
                         <option value="chime">Gentle Chime</option>
                         <option value="bell">Bell</option>
-                        <option value="alarm">Alarm Clock</option>
+                        <option value="digital">Digital Alarm</option>
                         <option value="nature">Nature Sound</option>
+                        <option value="soft">Soft Tone</option>
                     </select>
-                    <button onclick="previewSound()">🔊 Preview</button>
+                    <button onclick="previewSound()">🎵 Preview</button>
                 </div>
                 <div class="volume-control">
                     <span>Volume:</span>
@@ -284,31 +391,54 @@
                     <span id="volumeDisplay">70%</span>
                 </div>
             </div>
-
-            <div style="margin-top: 30px;">
+            
+            <div class="timer-controls">
                 <button onclick="startTimer()" id="startBtn">▶️ Start</button>
                 <button onclick="pauseTimer()" id="pauseBtn" disabled>⏸️ Pause</button>
                 <button onclick="resetTimer()" id="resetBtn">🔄 Reset</button>
             </div>
         </div>
+
+        <div class="hourglass-container">
+            <div class="hourglass">
+                <div class="sand-container">
+                    <div class="top-sand" id="topSand"></div>
+                    <div class="bottom-sand" id="bottomSand"></div>
+                    <div class="falling-sand" id="fallingSand"></div>
+                    <!-- Multiple sand particles for realistic effect -->
+                    <div class="sand-particle" id="particle1" style="left: 48%;"></div>
+                    <div class="sand-particle" id="particle2" style="left: 52%;"></div>
+                    <div class="sand-particle" id="particle3" style="left: 50%;"></div>
+                </div>
+                <div class="neck"></div>
+            </div>
+        </div>
+
+        <div class="time-display" id="timeDisplay">05:00</div>
+        <div class="status" id="status">Ready to start</div>
     </div>
 
     <script>
         let timer = null;
-        let totalTime = 300; // 5 minutes in seconds
-        let remainingTime = totalTime;
+        let totalSeconds = 300; // 5 minutes default
+        let remainingSeconds = totalSeconds;
         let isRunning = false;
+        let isPaused = false;
+
+        // Initialize audio context
         let audioContext = null;
 
-        // Initialize audio context on first user interaction
         function initAudioContext() {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
         }
 
-        // Sound generation functions
-        function generateBeep(frequency = 800, duration = 0.5) {
+        function getVolume() {
+            return parseInt(document.getElementById('volumeSlider').value) / 100 * 0.4;
+        }
+
+        function createTone(frequency, duration, type = 'sine') {
             initAudioContext();
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
@@ -316,8 +446,8 @@
             oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
             
-            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-            oscillator.type = 'sine';
+            oscillator.frequency.value = frequency;
+            oscillator.type = type;
             
             gainNode.gain.setValueAtTime(0, audioContext.currentTime);
             gainNode.gain.linearRampToValueAtTime(getVolume(), audioContext.currentTime + 0.01);
@@ -327,53 +457,41 @@
             oscillator.stop(audioContext.currentTime + duration);
         }
 
-        function generateChime() {
-            initAudioContext();
-            const frequencies = [523, 659, 784]; // C, E, G
-            frequencies.forEach((freq, index) => {
-                setTimeout(() => generateBeep(freq, 0.8), index * 200);
-            });
-        }
-
-        function generateBell() {
-            initAudioContext();
-            for (let i = 0; i < 3; i++) {
-                setTimeout(() => generateBeep(440, 0.6), i * 300);
+        function playSound(soundType) {
+            switch(soundType) {
+                case 'beep':
+                    createTone(800, 0.5);
+                    break;
+                case 'chime':
+                    createTone(523.25, 0.3); // C5
+                    setTimeout(() => createTone(659.25, 0.3), 200); // E5
+                    setTimeout(() => createTone(783.99, 0.5), 400); // G5
+                    break;
+                case 'bell':
+                    createTone(440, 0.8, 'triangle');
+                    break;
+                case 'digital':
+                    for(let i = 0; i < 3; i++) {
+                        setTimeout(() => createTone(1000, 0.2, 'square'), i * 300);
+                    }
+                    break;
+                case 'nature':
+                    // Bird chirp-like sounds
+                    const frequencies = [1000, 1200, 800, 1100];
+                    frequencies.forEach((freq, index) => {
+                        setTimeout(() => createTone(freq, 0.3), index * 100);
+                    });
+                    break;
+                case 'soft':
+                    createTone(220, 1.0, 'triangle');
+                    setTimeout(() => createTone(330, 1.0, 'triangle'), 200);
+                    break;
             }
-        }
-
-        function generateAlarm() {
-            initAudioContext();
-            for (let i = 0; i < 6; i++) {
-                setTimeout(() => {
-                    generateBeep(800, 0.2);
-                    setTimeout(() => generateBeep(600, 0.2), 150);
-                }, i * 400);
-            }
-        }
-
-        function generateNature() {
-            initAudioContext();
-            // Simulate bird chirp-like sounds
-            const frequencies = [1000, 1200, 800, 1100];
-            frequencies.forEach((freq, index) => {
-                setTimeout(() => generateBeep(freq, 0.3), index * 100);
-            });
-        }
-
-        function getVolume() {
-            return parseInt(document.getElementById('volumeSlider').value) / 100 * 0.3;
         }
 
         function previewSound() {
             const soundType = document.getElementById('soundSelect').value;
-            switch (soundType) {
-                case 'beep': generateBeep(); break;
-                case 'chime': generateChime(); break;
-                case 'bell': generateBell(); break;
-                case 'alarm': generateAlarm(); break;
-                case 'nature': generateNature(); break;
-            }
+            playSound(soundType);
         }
 
         function updateVolumeDisplay() {
@@ -381,134 +499,172 @@
             document.getElementById('volumeDisplay').textContent = volume + '%';
         }
 
-        function updateTimerDisplay() {
-            const hours = Math.floor(remainingTime / 3600);
-            const minutes = Math.floor((remainingTime % 3600) / 60);
-            const seconds = remainingTime % 60;
+        function updateDisplay() {
+            const hours = Math.floor(remainingSeconds / 3600);
+            const minutes = Math.floor((remainingSeconds % 3600) / 60);
+            const seconds = remainingSeconds % 60;
             
-            const display = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            document.getElementById('timerDisplay').textContent = display;
-            
-            if (remainingTime <= 0) {
-                document.getElementById('timerDisplay').classList.add('finished');
-                document.querySelector('.container').classList.add('shake');
-                setTimeout(() => document.querySelector('.container').classList.remove('shake'), 1500);
+            let display = '';
+            if (hours > 0) {
+                display = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }
+            
+            document.getElementById('timeDisplay').textContent = display;
+            updateHourglass();
         }
 
         function updateHourglass() {
-            const progress = (totalTime - remainingTime) / totalTime;
-            const sandTopHeight = (1 - progress) * 70; // Max height 70px
-            const sandBottomHeight = progress * 70;
+            const progress = (totalSeconds - remainingSeconds) / totalSeconds;
+            const topHeight = Math.max(0, 50 - (progress * 50));
+            const bottomHeight = Math.min(50, progress * 50);
             
-            document.getElementById('sandTop').style.height = sandTopHeight + 'px';
-            document.getElementById('sandBottom').style.height = sandBottomHeight + 'px';
+            document.getElementById('topSand').style.height = topHeight + '%';
+            document.getElementById('bottomSand').style.height = bottomHeight + '%';
             
             // Show falling sand animation when running
-            if (isRunning && remainingTime > 0) {
-                document.getElementById('fallingSand').style.height = '20px';
-                document.getElementById('fallingSand').style.opacity = '0.8';
+            const fallingSand = document.getElementById('fallingSand');
+            const particles = [
+                document.getElementById('particle1'),
+                document.getElementById('particle2'),
+                document.getElementById('particle3')
+            ];
+            
+            if (isRunning && !isPaused && remainingSeconds > 0) {
+                fallingSand.classList.add('active');
+                particles.forEach((particle, index) => {
+                    setTimeout(() => {
+                        particle.classList.add('active');
+                    }, index * 200);
+                });
             } else {
-                document.getElementById('fallingSand').style.height = '0px';
-                document.getElementById('fallingSand').style.opacity = '0';
+                fallingSand.classList.remove('active');
+                particles.forEach(particle => {
+                    particle.classList.remove('active');
+                });
             }
-        }
-
-        function setTimerFromInputs() {
-            const hours = parseInt(document.getElementById('hours').value) || 0;
-            const minutes = parseInt(document.getElementById('minutes').value) || 0;
-            const seconds = parseInt(document.getElementById('seconds').value) || 0;
-            
-            totalTime = hours * 3600 + minutes * 60 + seconds;
-            remainingTime = totalTime;
-            
-            if (totalTime === 0) {
-                totalTime = 300; // Default to 5 minutes
-                remainingTime = totalTime;
-                document.getElementById('minutes').value = 5;
-            }
-            
-            updateTimerDisplay();
-            updateHourglass();
         }
 
         function startTimer() {
             if (!isRunning) {
-                setTimerFromInputs();
+                // Get time from inputs
+                const hours = parseInt(document.getElementById('hours').value) || 0;
+                const minutes = parseInt(document.getElementById('minutes').value) || 0;
+                const seconds = parseInt(document.getElementById('seconds').value) || 0;
+                
+                totalSeconds = hours * 3600 + minutes * 60 + seconds;
+                
+                if (totalSeconds === 0) {
+                    alert('Please set a time greater than 0!');
+                    return;
+                }
+                
+                remainingSeconds = totalSeconds;
                 isRunning = true;
-                
-                document.getElementById('startBtn').disabled = true;
-                document.getElementById('pauseBtn').disabled = false;
-                document.getElementById('timerDisplay').classList.remove('finished');
-                
-                timer = setInterval(() => {
-                    remainingTime--;
-                    updateTimerDisplay();
-                    updateHourglass();
-                    
-                    if (remainingTime <= 0) {
-                        // Timer finished
-                        clearInterval(timer);
-                        isRunning = false;
-                        
-                        document.getElementById('startBtn').disabled = false;
-                        document.getElementById('pauseBtn').disabled = true;
-                        
-                        // Play sound
-                        previewSound();
-                        
-                        // Reset for next use
-                        setTimeout(() => {
-                            remainingTime = totalTime;
-                            updateTimerDisplay();
-                            updateHourglass();
-                            document.getElementById('timerDisplay').classList.remove('finished');
-                        }, 3000);
-                    }
-                }, 1000);
+                isPaused = false;
+            } else if (isPaused) {
+                isPaused = false;
             }
+            
+            timer = setInterval(() => {
+                remainingSeconds--;
+                updateDisplay();
+                
+                if (remainingSeconds <= 0) {
+                    finishTimer();
+                }
+            }, 1000);
+            
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('pauseBtn').disabled = false;
+            document.getElementById('status').textContent = '⏱️ Timer running...';
+            
+            updateDisplay();
         }
 
         function pauseTimer() {
-            if (isRunning) {
+            if (timer) {
                 clearInterval(timer);
-                isRunning = false;
+                timer = null;
+                isPaused = true;
                 
                 document.getElementById('startBtn').disabled = false;
                 document.getElementById('pauseBtn').disabled = true;
+                document.getElementById('status').textContent = '⏸️ Timer paused';
                 
-                updateHourglass(); // Stop falling sand animation
+                updateDisplay();
             }
         }
 
         function resetTimer() {
-            clearInterval(timer);
-            isRunning = false;
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
             
-            setTimerFromInputs();
+            isRunning = false;
+            isPaused = false;
+            
+            const hours = parseInt(document.getElementById('hours').value) || 0;
+            const minutes = parseInt(document.getElementById('minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('seconds').value) || 0;
+            
+            totalSeconds = hours * 3600 + minutes * 60 + seconds;
+            remainingSeconds = totalSeconds;
             
             document.getElementById('startBtn').disabled = false;
             document.getElementById('pauseBtn').disabled = true;
-            document.getElementById('timerDisplay').classList.remove('finished');
+            document.getElementById('status').textContent = '✅ Ready to start';
+            document.getElementById('timeDisplay').classList.remove('finished');
+            
+            updateDisplay();
+        }
+
+        function finishTimer() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            
+            isRunning = false;
+            isPaused = false;
+            
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('pauseBtn').disabled = true;
+            document.getElementById('status').textContent = '🎉 Time\'s up!';
+            document.getElementById('timeDisplay').classList.add('finished');
+            
+            // Add shake effect
+            document.querySelector('.container').classList.add('shake');
+            setTimeout(() => {
+                document.querySelector('.container').classList.remove('shake');
+            }, 1500);
+            
+            // Play alarm sound
+            const soundType = document.getElementById('soundSelect').value;
+            playSound(soundType);
+            
+            updateDisplay();
         }
 
         // Event listeners
         document.getElementById('volumeSlider').addEventListener('input', updateVolumeDisplay);
-        
+
+        // Initialize display
+        updateDisplay();
+        updateVolumeDisplay();
+
+        // Update display when inputs change
         ['hours', 'minutes', 'seconds'].forEach(id => {
             document.getElementById(id).addEventListener('input', () => {
                 if (!isRunning) {
-                    setTimerFromInputs();
+                    resetTimer();
                 }
             });
         });
 
-        // Initialize
-        updateTimerDisplay();
-        updateHourglass();
-        updateVolumeDisplay();
-
-        // Enable audio context on any click
+        // Initialize audio context on first user interaction
         document.addEventListener('click', initAudioContext, { once: true });
     </script>
 </body>
